@@ -6,22 +6,25 @@
 /*   By: eviscont <eviscont@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 17:43:04 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/02 15:37:35 by eviscont         ###   ########.fr       */
+/*   Updated: 2024/12/03 16:07:57 by eviscont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MUTANTSTACK_HPP
-# define MUTANTSTACK_HPP
+#ifndef BITCOINEXCHANGE_HPP
+# define BITCOINEXCHANGE_HPP
 
 #include <iostream>
+#include <string>
 #include <fstream>
+#include <cstdlib>
 #include <map>
+#include <iomanip>
 #include <exception>
 
 class BitcoinExchange
 {
 	public:
-	static std::map<std::string, float>	data;
+	std::map<std::string, double>	data;
 
 	/* Orthodox canonical form */
 	BitcoinExchange();
@@ -30,7 +33,10 @@ class BitcoinExchange
     BitcoinExchange	&operator=(const BitcoinExchange &other);
 
 	/* Other methods */
-	void	initData(char *file);
+	void	loadData(const std::string &file);
+
+	/* Debugger methods */
+	void	printData() const;
 };
 
 #endif

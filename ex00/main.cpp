@@ -6,7 +6,7 @@
 /*   By: eviscont <eviscont@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 17:43:09 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/02 15:32:53 by eviscont         ###   ########.fr       */
+/*   Updated: 2024/12/03 15:14:59 by eviscont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,9 @@ int	main(int argc, char **argv)
 		std::cerr << "Error: try ./btc <input_file>" << std::endl;
 		return 1;
 	}
+	(void)argv;
+	BitcoinExchange btc;
+	btc.loadData("data.csv");
+	btc.printData();
 
 }

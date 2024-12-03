@@ -6,51 +6,55 @@
 /*   By: eviscont <eviscont@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 17:42:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/02 15:37:50 by eviscont         ###   ########.fr       */
+/*   Updated: 2024/12/03 16:14:14 by eviscont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BitcoinExchange.hpp"
 
-BitcoinExchange::BitcoinExchange()
-{
-
-}
+/* Orthodox canonical form */
+BitcoinExchange::BitcoinExchange() {}
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange &other)
 {
     *this = other;
 }
 
-BitcoinExchange::~BitcoinExchange()
-{
-
-}
+BitcoinExchange::~BitcoinExchange() {}
 
 BitcoinExchange  &BitcoinExchange::operator=(const BitcoinExchange &other)
 {
-    if (this == &other)
-        return *this;
-//TO DO
+	if (this != &other)
+		data = other.data;
     return *this;
 }
 
-void	BitcoinExchange::initData(char *file)
+/* Other methods */
+void	BitcoinExchange::loadData(const std::string &file)
 {
-	std::ifstream infile;
-	infile.open(file);
+	std::ifstream infile(file.c_str());
 	if (!infile.is_open())
 	{
-		std::cout << "Error opening input file" << std::endl;
+		std::cout << "Error opening Database" << std::endl;
 		return ;
 	}
-		std::string	line;
-	size_t	aux1;
-	size_t	aux2;
 
 	std::string line;
+	std::string date;
+	double value;
+	std::getline(infile, line);
 	while (std::getline(infile, line))
 	{
-
+		date = line.substr(0, 10);
+		value = std::atof(line.substr(11).c_str());
+		data[date] = value;
 	}
+}
+
+/* Debugger methods */
+void	BitcoinExchange::printData() const
+{
+	std::map<std::string, double>::const_iterator it;
+	for (it = data.begin(); it != data.end(); ++it)
+    	std::cout << it->first <<  "," << std::fixed << std::setprecision(2) << it->second << '\n';
 }
