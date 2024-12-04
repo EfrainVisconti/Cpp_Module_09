@@ -6,7 +6,7 @@
 /*   By: eviscont <eviscont@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 17:42:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/04 18:22:36 by eviscont         ###   ########.fr       */
+/*   Updated: 2024/12/04 19:54:59 by eviscont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ void	BitcoinExchange::processInfile(const std::string &file)
 		}
 		catch (const std::exception& e)
 		{
-			std::cerr << "Error: " << e.what() << std::endl;
+			std::cout << "Error: " << e.what() << std::endl;
 		}
 	}
 	infile.close();
