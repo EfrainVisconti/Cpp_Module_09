@@ -6,7 +6,7 @@
 /*   By: eviscont <eviscont@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 17:43:04 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/04 17:08:33 by eviscont         ###   ########.fr       */
+/*   Updated: 2024/12/04 18:22:43 by eviscont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,6 @@ class BitcoinExchange
 
 	/* Debugger methods */
 	void	printData() const;
-
-	/* Exception */
-	class InvalidFileException : public std::exception
-	{
-		public:
-			char const *what() const throw();
-	};
 };
 
 #endif

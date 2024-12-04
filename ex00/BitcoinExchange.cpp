@@ -6,7 +6,7 @@
 /*   By: eviscont <eviscont@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 17:42:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/04 18:02:58 by eviscont         ###   ########.fr       */
+/*   Updated: 2024/12/04 18:22:36 by eviscont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ bool	BitcoinExchange::isValidDate(const std::string &date)
 	if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))
 		daysMonth[1] = 29;
 	if (day < 1 || day > daysMonth[month - 1]
-		|| (year == _auxCurrentDate[YEAR] && month >= _auxCurrentDate[MONTH]
-		&& day > _auxCurrentDate[DAY]))
+		|| (year == _auxCurrentDate[YEAR] && (month > _auxCurrentDate[MONTH]
+		|| (month == _auxCurrentDate[MONTH] && day > _auxCurrentDate[DAY]))))
 		return false;
 
 	return true;
@@ -164,11 +164,6 @@ void	BitcoinExchange::processInfile(const std::string &file)
 		{
 			processLine(line);
 		}
-		catch (const InvalidFileException& e)
-		{
-			std::cerr << e.what() << std::endl;
-			return ;
-		}
 		catch (const std::exception& e)
 		{
 			std::cerr << "Error: " << e.what() << std::endl;
@@ -183,10 +178,4 @@ void	BitcoinExchange::printData() const
 	std::map<std::string, double>::const_iterator it;
 	for (it = data.begin(); it != data.end(); ++it)
     	std::cout << it->first <<  "," << std::fixed << std::setprecision(2) << it->second << '\n';
-}
-
-/* Exception */
-char const	*BitcoinExchange::InvalidFileException::what() const throw()
-{
-	return "Invalid input file";
 }
