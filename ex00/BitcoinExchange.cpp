@@ -6,7 +6,7 @@
 /*   By: eviscont <eviscont@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/30 17:42:39 by codespace         #+#    #+#             */
-/*   Updated: 2024/12/04 17:08:38 by eviscont         ###   ########.fr       */
+/*   Updated: 2024/12/04 18:02:58 by eviscont         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,11 @@ bool	BitcoinExchange::isValidDate(const std::string &date)
 	if (year < 2009 || year > _auxCurrentDate[YEAR])
 		return false;
 
-	int month = std::atoi(date.substr(5,6).c_str());
+	int month = std::atoi(date.substr(5,2).c_str());
 	if (month < 1 || month > 12)
 		return false;
 
-	int day = std::atoi(date.substr(8, 9).c_str());
+	int day = std::atoi(date.substr(8, 2).c_str());
 	int daysMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 	if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0))
 		daysMonth[1] = 29;
@@ -96,13 +96,13 @@ void	BitcoinExchange::processDate(const std::string &date)
 		std::map<std::string, double>::iterator it = data.find(date);
 		if (it != data.end())
 		{
-			std::cout << it->first << " => " << _auxValue << " = " << _auxValue * it->second << std::endl;
+			std::cout << date << " => " << _auxValue << " = " << _auxValue * it->second << std::endl;
 			return ;
 		}
 		it = data.lower_bound(date);
 		if (it != data.begin())
 			--it;
-		std::cout << it->first << " => " << _auxValue << " = " << _auxValue * it->second << std::endl;
+		std::cout << date << " => " << _auxValue << " = " << _auxValue * it->second << std::endl;
 	}
 	else
 		throw std::runtime_error("invalid input date => " + date);
@@ -110,19 +110,19 @@ void	BitcoinExchange::processDate(const std::string &date)
 
 void	BitcoinExchange::processValue(const std::string &strValue)
 {
+	if (strValue.empty() || strValue.find_first_not_of("0123456789.- ") != std::string::npos)
+		throw std::runtime_error("invalid input value => " + strValue);
 	_auxValue = std::atof(strValue.c_str());
 	if (_auxValue > 1000)
 		throw std::runtime_error("too large a number.");
 	if (_auxValue < 0)
 		throw std::runtime_error("not a positive number.");
-	if (_auxValue == 0.0)
-		throw std::runtime_error("invalid input value => " + strValue);
 }
 
 void	BitcoinExchange::processValidLine(const std::string &line)
 {
 	std::string date = line.substr(0, 10);
-	std::string strValue = line.substr(12);
+	std::string strValue = line.substr(13);
 	processValue(strValue);
 	processDate(date);
 }
@@ -132,7 +132,8 @@ void	BitcoinExchange::processLine(const std::string &line)
 	if (line.empty())
 		return ;
 	if (line.size() >= 14 && line[4] == '-' && line[7] == '-'
-		&& line[11] == '|' && line.substr(0, 10).find(' ') == std::string::npos)
+		&& line[10] == ' ' && line[11] == '|' && line[12] == ' '
+		&& line.substr(0, 10).find_first_not_of("0123456789-") == std::string::npos)
 		processValidLine(line);
 	else
 		throw std::runtime_error("bad input => " + line);
